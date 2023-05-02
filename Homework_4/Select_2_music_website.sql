@@ -46,12 +46,12 @@ JOIN musician m ON ma.musician_id = m.id
 JOIN genres_of_music gom ON m.id = gom.musician_id
 JOIN genre g ON gom.genre_id = g.id
 GROUP BY a.name, m.name
-HAVING COUNT(g.name) > 1
+HAVING COUNT(g.name) > 1;
 
 -- Наименования треков, которые не входят в сборники
 SELECT name FROM music_track mt
-LEFT JOIN music_track_collection mtc  ON mtc.music_track_id = mt.id
-WHERE mtc.collection_id IS NULL
+LEFT JOIN music_track_collection mtc ON mtc.music_track_id = mt.id
+WHERE mtc.collection_id IS NULL;
 
 -- Исполнитель или исполнители, написавшие самый короткий по продолжительности трек
 SELECT m.name
