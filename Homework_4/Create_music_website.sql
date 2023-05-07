@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS genre (
 	id SERIAL PRIMARY KEY,
-	name    VARCHAR(40) DISTINCT NOT NULL
+	name    VARCHAR(40) NOT NULL
 	);
 
 CREATE TABLE IF NOT EXISTS musician (
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS collection (
 	name    VARCHAR(50)    NOT NULL,
 	year    INTEGER        NOT NULL
 	        CONSTRAINT collection_range
-            CHECK(collection BETWEEN 1600 AND 2023)
+            CHECK(year BETWEEN 1600 AND 2023)
 	);
 
 CREATE TABLE IF NOT EXISTS music_track_collection (

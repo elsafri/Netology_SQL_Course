@@ -1,7 +1,7 @@
 -- Количество исполнителей в каждом жанре
 SELECT g.name, COUNT(musician_id) count_musicians
 FROM genres_of_music gom
-JOIN  genre g ON gom.genre_id = g.id
+RIGHT JOIN  genre g ON gom.genre_id = g.id
 GROUP BY g.name
 ORDER BY count_musicians DESC;
 
@@ -21,12 +21,14 @@ GROUP BY a.name
 ORDER BY avg_length DESC;
 
 -- Все исполнители, которые не выпустили альбомы в 2020 году
-SELECT DISTINCT m.name
-FROM musicians_albums ma
-JOIN album a ON ma.album_id  = a.id
-JOIN musician m ON ma.musician_id = m.id
-WHERE a.year NOT IN (2020)
-ORDER BY m.name;
+SELECT m.name
+FROM musician m 
+WHERE m.name NOT IN (
+    SELECT m.name
+    FROM musician m
+    JOIN musicians_albums ma ON m.id = ma.musician_id
+    JOIN album a ON ma.album_id = a.id
+    WHERE a.year = 2020);
 
 --Названия сборников, в которых присутствует конкретный исполнитель
 SELECT DISTINCT c.name collection_name
@@ -46,12 +48,12 @@ JOIN musician m ON ma.musician_id = m.id
 JOIN genres_of_music gom ON m.id = gom.musician_id
 JOIN genre g ON gom.genre_id = g.id
 GROUP BY a.name, m.name
-HAVING COUNT(g.name) > 1
+HAVING COUNT(g.name) > 1;
 
 -- Наименования треков, которые не входят в сборники
 SELECT name FROM music_track mt
-LEFT JOIN music_track_collection mtc  ON mtc.music_track_id = mt.id
-WHERE mtc.collection_id IS NULL
+LEFT JOIN music_track_collection mtc ON mtc.music_track_id = mt.id
+WHERE mtc.collection_id IS NULL;
 
 -- Исполнитель или исполнители, написавшие самый короткий по продолжительности трек
 SELECT m.name
