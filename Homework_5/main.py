@@ -113,7 +113,7 @@ def find_client(conn, first_name=None, last_name=None, email=None, phone=None):
 
 
 if __name__ == '__main__':
-    with psycopg2.connect(database='clientsbd', user='postgres', password='31121926t') as connect:
+    with psycopg2.connect(database='clientsbd', user='postgres', password='postgres') as connect:
         try:
             create_db(connect)
             add_client(connect, first_name='Анна', last_name='Каренина', email='a_karenina@gmail.com',
