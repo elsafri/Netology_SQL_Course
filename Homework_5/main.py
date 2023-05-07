@@ -115,7 +115,6 @@ def find_client(conn, first_name=None, last_name=None, email=None, phone=None):
 if __name__ == '__main__':
     with psycopg2.connect(database='clientsbd', user='postgres', password='31121926t') as connect:
         try:
-
             create_db(connect)
             add_client(connect, first_name='Анна', last_name='Каренина', email='a_karenina@gmail.com',
                        phones=('+799584624581', '+789995854671'))
@@ -133,5 +132,3 @@ if __name__ == '__main__':
         except psycopg2.Error as er:
             print(f'ERROR: {er}')
     connect.close()
-
-
