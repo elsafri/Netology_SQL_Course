@@ -40,9 +40,10 @@ def get_publisher_info(publisher):
     for book_title, shop_name, sale_price, sale_date in query:
         print(f"{book_title: <40} | {shop_name: <10} | {sale_price: <8} | {sale_date.strftime('%d-%m-%Y')}")
 
+
 session.close()
 
 
 if __name__ == '__main__':
-     add_data(data, publisher=Publisher, shop=Shop, book=Book, stock=Stock, sale=Sale)
+    add_data(data, publisher=Publisher, shop=Shop, book=Book, stock=Stock, sale=Sale)
     get_publisher_info(input(f'Введите имя или id издателя: '))
