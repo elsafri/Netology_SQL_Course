@@ -26,33 +26,23 @@ def add_data(data, **models):
 
 
 def get_publisher_info(publisher):
+    query = session.query(Book.title, Shop.name, Sale.price, Sale.date_sale).\
+        select_from(Shop).\
+        join(Stock, Shop.id == Stock.id_shop).\
+        join(Book, Stock.id_book == Book.id).\
+        join(Publisher, Book.id_publisher == Publisher.id).\
+        join(Sale, Stock.id == Sale.id_stock)
     if publisher.isdigit():
-         query = session.query(Publisher, Book, Stock, Shop, Sale).\
-             join(Book, Publisher.id == Book.id_publisher).\
-             join(Stock, Book.id == Stock.id_book).\
-             join(Shop, Stock.id_shop == Shop.id).\
-             join(Sale, Stock.id == Sale.id_stock).\
-             filter(Publisher.id == publisher).all()
-         if query:
-             for publisher, book, stock, shop, sale in query:
-                 print(f'{book.title}|{shop.name}|{sale.price}|{sale.date_sale}')
-         else:
-             print(f'Издателя ({publisher}) нет в базе данных')
+        query = query.filter(Publisher.id == publisher).all()
+
     else:
-        query = session.query(Publisher, Book, Stock, Shop, Sale).\
-            join(Book, Publisher.id == Book.id_publisher).\
-            join(Stock, Book.id == Stock.id_book).\
-            join(Shop, Stock.id_shop == Shop.id).\
-            join(Sale, Stock.id == Sale.id_stock).\
-            filter(Publisher.name == publisher).all()
-        if query:
-            for publisher, book, stock, shop, sale in query:
-                print(f'{book.title}|{shop.name}|{sale.price}|{sale.date_sale}')
-        else:
-            print(f'Издателя ({publisher}) нет в базе данных')
+        query = query.filter(Publisher.name == publisher)
+    for book_title, shop_name, sale_price, sale_date in query:
+        print(f"{book_title: <40} | {shop_name: <10} | {sale_price: <8} | {sale_date.strftime('%d-%m-%Y')}")
+
 session.close()
 
 
 if __name__ == '__main__':
-    add_data(data, publisher=Publisher, shop=Shop, book=Book, stock=Stock, sale=Sale)
+     add_data(data, publisher=Publisher, shop=Shop, book=Book, stock=Stock, sale=Sale)
     get_publisher_info(input(f'Введите имя или id издателя: '))
