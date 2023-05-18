@@ -27,14 +27,13 @@ def add_data(data, **models):
 
 def get_publisher_info(publisher):
     query = session.query(Book.title, Shop.name, Sale.price, Sale.date_sale).\
-        select_from(Shop).\
-        join(Stock, Shop.id == Stock.id_shop).\
-        join(Book, Stock.id_book == Book.id).\
-        join(Publisher, Book.id_publisher == Publisher.id).\
-        join(Sale, Stock.id == Sale.id_stock)
+        select_from(Sale).\
+        join(Stock, Sale.stock).\
+        join(Shop, Stock.shops).\
+        join(Book, Stock.books).\
+        join(Publisher, Book.publishers)
     if publisher.isdigit():
         query = query.filter(Publisher.id == publisher).all()
-
     else:
         query = query.filter(Publisher.name == publisher)
     for book_title, shop_name, sale_price, sale_date in query:
